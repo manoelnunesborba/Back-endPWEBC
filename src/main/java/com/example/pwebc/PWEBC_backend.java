@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 @SpringBootApplication
 
-public class AuroreApplication {
+public class PWEBC_backend {
     @Autowired
     public static void main(String[] args) {
-        SpringApplication.run(AuroreApplication.class, args);
+        SpringApplication.run(PWEBC_backend.class, args);
     }
 
     @Bean
