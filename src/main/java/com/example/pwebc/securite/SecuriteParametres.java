@@ -1,6 +1,5 @@
 package com.example.pwebc.securite;
 
-import com.example.pwebc.filter.CorsFilter;
 import com.example.pwebc.filter.CustomAuthFilter;
 import com.example.pwebc.filter.CustomAuthoFilter;
 import lombok.RequiredArgsConstructor;
@@ -28,16 +27,12 @@ public class SecuriteParametres extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
-    @Bean
-    CorsFilter corsFilter() {
-        CorsFilter filter = new CorsFilter();
-        return filter;
-    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(corsFilter(), SessionManagementFilter.class);
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(STATELESS);
+       http.cors().and().csrf().disable().antMatcher("/**").authorizeRequests().and().httpBasic();
+
+       http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/login", "/controller/createaccount",  "/controller/refreshToken/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
 
