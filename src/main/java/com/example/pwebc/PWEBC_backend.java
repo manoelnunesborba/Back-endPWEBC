@@ -23,7 +23,14 @@ public class PWEBC_backend {
         SpringApplication.run(PWEBC_backend.class, args);
     }
 
-
+    @Bean
+    public WebMvcConfigurer configure(){
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").allowedOrigins("*").allowedHeaders("*");            }
+        };
+    }
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
