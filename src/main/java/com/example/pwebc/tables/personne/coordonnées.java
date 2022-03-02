@@ -14,22 +14,34 @@ public class coordonnées {
             strategy = GenerationType.SEQUENCE,
             generator = "seq_role"
     )
+
     private Long id;
+    private String libelle;
     private Long X;
     private Long Y;
 
     public coordonnées() {
     }
 
-    public coordonnées(Long x, Long y) {
+    public coordonnées(Long id, String libelle, Long x, Long y) {
+        this.libelle = libelle;
+        this.id = id;
         X = x;
         Y = y;
     }
 
-    public coordonnées(Long id, Long x, Long y) {
-        this.id = id;
+    public coordonnées(String libelle, Long x, Long y) {
+        this.libelle = libelle;
         X = x;
         Y = y;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
     }
 
     public Long getY() {

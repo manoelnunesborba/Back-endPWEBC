@@ -22,6 +22,7 @@ import java.util.Optional;
 @Slf4j
 public class UtilisateurService implements UserDetailsService {
     private final UtilisateurRepository utilisateurRepository;
+    private final coordonnéesRepository core;
     private final CoordService servRepo;
     private final role roleRepo;
     private final PasswordEncoder PE;
@@ -47,8 +48,9 @@ public class UtilisateurService implements UserDetailsService {
     public utilisateur getAgent(String username){
         return utilisateurRepository.FindByUsername(username);
     }
-    public UtilisateurService(UtilisateurRepository ageRepo, CoordService servRepo, role roleRepo, PasswordEncoder pe) {
+    public UtilisateurService(UtilisateurRepository ageRepo, coordonnéesRepository core, CoordService servRepo, role roleRepo, PasswordEncoder pe) {
         this.utilisateurRepository = ageRepo;
+        this.core = core;
         this.servRepo = servRepo;
         this.roleRepo = roleRepo;
         PE = pe;
@@ -76,13 +78,13 @@ public class UtilisateurService implements UserDetailsService {
     public utilisateur getagent(Long id){
             return utilisateurRepository.getById(id);
     }
-
-    public void addCoordToUser(utilisateur usr, coordonnées coord){
-        Optional<utilisateur> ag = utilisateurRepository.findById(usr.getId());
-        ag.get().getCoord().add(coord);
+    public void saveCoord(coordonnées cr){
+        core.save(cr);
+    }
+    public void addCoordToUser(Long id, Long idcord){
+        Optional<utilisateur> ag = utilisateurRepository.findById(id);
+        Optional<coordonnées> coord = core.findById(idcord);
+        ag.get().getCoord().add(coord.get());
 
     }
-
-
-
 }

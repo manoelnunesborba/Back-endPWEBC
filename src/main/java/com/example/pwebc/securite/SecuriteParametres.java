@@ -30,9 +30,9 @@ public class SecuriteParametres extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-       http.cors().and().csrf().disable().antMatcher("/**").authorizeRequests().and().httpBasic();
+        http.cors().and().csrf().disable().antMatcher("/**").authorizeRequests().and().httpBasic();
 
-       http.sessionManagement().sessionCreationPolicy(STATELESS);
+        http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/login", "/controller/createaccount",  "/controller/refreshToken/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
 
