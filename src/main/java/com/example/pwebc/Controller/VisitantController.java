@@ -49,7 +49,7 @@ public class VisitantController {
             consumes = MediaType.APPLICATION_JSON_VALUE, // il y a une erreur lors que j'essaye d'ajouter...
             produces = MediaType.APPLICATION_JSON_VALUE)
     public void addCoordUser(@RequestBody coordonnées coord,HttpServletRequest request, HttpServletResponse response) throws IOException{
-        log.info("addCoord function");
+        log.info("addCoord function {}", coord);
         String autheadet = request.getHeader(AUTHORIZATION);
         if(autheadet!= null && autheadet.startsWith("Baerer ")){
             try {
