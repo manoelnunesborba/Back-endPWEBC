@@ -1,8 +1,12 @@
 package com.example.pwebc.tables.personne;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
@@ -24,10 +28,10 @@ public class utilisateur {
     private Long id;
     private String nomuser;
     private String mdp;
-    @ManyToMany(fetch = EAGER)
-    private Collection<Role> roles = new ArrayList<>();
     @ManyToMany(fetch = LAZY)
-    private Collection<coordonnées> coord = new ArrayList<>();
+    private Collection<Role> roles = new ArrayList<>();
+    @ManyToMany(fetch = EAGER)
+    private Collection<coordonnées> coord = new ArrayList<coordonnées>();
 
 
     public utilisateur() {

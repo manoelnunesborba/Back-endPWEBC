@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.ArrayList;
 
@@ -49,6 +48,9 @@ public class PWEBC_backend {
             as.addRoleToUser(Long.parseLong("1"),"CHEF");
             as.addRoleToUser(Long.parseLong("2"),"CHEF");
             as.addRoleToUser(Long.parseLong("3"),"CHEF");
+            coordonnées coord2 = new coordonnées("chez moi", Long.parseLong("90"), Long.parseLong("12"));
+            as.saveCoord(coord2);
+            as.addCoordToUser(Long.parseLong("2"), coord2.getId());
             //prestations posibles
         };
     }
