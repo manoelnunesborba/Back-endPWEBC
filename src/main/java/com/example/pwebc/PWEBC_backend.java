@@ -48,9 +48,9 @@ public class PWEBC_backend {
             as.addRoleToUser(Long.parseLong("1"),"CHEF");
             as.addRoleToUser(Long.parseLong("2"),"CHEF");
             as.addRoleToUser(Long.parseLong("3"),"CHEF");
-            coordonnées coord2 = new coordonnées("chez moi", Long.parseLong("90"), Long.parseLong("12"));
-            as.saveCoord(coord2);
-            as.addCoordToUser(Long.parseLong("2"), coord2.getId());
+            coordonnées coord2 = new coordonnées("chez moi", 90.03, 12.938924);
+
+            as.addCoordToUser(Long.parseLong("2"), coord2);
             //prestations posibles
         };
     }

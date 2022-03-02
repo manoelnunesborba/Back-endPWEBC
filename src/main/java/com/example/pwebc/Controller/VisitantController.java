@@ -45,6 +45,37 @@ public class VisitantController {
         return ResponseEntity.ok().body(ageSer.getPerformerAge());
     }
 
+    @PostMapping(path = "addCoord",
+            consumes = MediaType.APPLICATION_JSON_VALUE, // il y a une erreur lors que j'essaye d'ajouter...
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void addCoordUser(@RequestBody coordonnées coord,HttpServletRequest request, HttpServletResponse response) throws IOException{
+        log.info("addCoord function");
+        String autheadet = request.getHeader(AUTHORIZATION);
+        if(autheadet!= null && autheadet.startsWith("Baerer ")){
+            try {
+                String refresh = autheadet.substring("Baerer ".length());
+                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                JWTVerifier verif = JWT.require(algorithm).build();
+                DecodedJWT decodedJWT = verif.verify(refresh);
+                String username = decodedJWT.getSubject();
+                utilisateur usr = ageSer.getAgent(username);
+                ageSer.addCoordToUser(usr.getId(), coord);
+
+            }catch(Exception ex){
+                response.setHeader("error", ex.getMessage());
+                response.setStatus(FORBIDDEN.value());
+                //response.sendError(FORBIDDEN.value());
+                Map<String,String> errors = new HashMap<>();
+                errors.put("error_message", ex.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), errors);
+            }
+        }else{
+            throw new RuntimeException("Token is missing");
+        }
+    }
+
+
     @GetMapping("getcoord")
     public List<coordonnées> getCoordUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         log.info("getcoord function");
@@ -69,7 +100,7 @@ public class VisitantController {
                 new ObjectMapper().writeValue(response.getOutputStream(), errors);
             }
         }else{
-            throw new RuntimeException("Refresh token isMissing");
+            throw new RuntimeException("Token is missing");
         }
         return null;
     }

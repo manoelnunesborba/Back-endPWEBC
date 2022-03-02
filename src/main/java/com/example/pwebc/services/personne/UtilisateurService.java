@@ -81,10 +81,10 @@ public class UtilisateurService implements UserDetailsService {
     public void saveCoord(coordonnées cr){
         core.save(cr);
     }
-    public void addCoordToUser(Long id, Long idcord){
+    public void addCoordToUser(Long id, coordonnées coord){
         Optional<utilisateur> ag = utilisateurRepository.findById(id);
-        Optional<coordonnées> coord = core.findById(idcord);
-        ag.get().getCoord().add(coord.get());
+        saveCoord(coord);
+        ag.get().getCoord().add(coord);
 
     }
 }

@@ -17,20 +17,20 @@ public class coordonnées {
 
     private Long id;
     private String libelle;
-    private Long X;
-    private Long Y;
+    private double X;
+    private double Y;
 
     public coordonnées() {
     }
 
-    public coordonnées(Long id, String libelle, Long x, Long y) {
+    public coordonnées(Long id, String libelle, double x, double y) {
         this.libelle = libelle;
         this.id = id;
         X = x;
         Y = y;
     }
 
-    public coordonnées(String libelle, Long x, Long y) {
+    public coordonnées(String libelle, double x, double y) {
         this.libelle = libelle;
         X = x;
         Y = y;
@@ -44,7 +44,7 @@ public class coordonnées {
         this.libelle = libelle;
     }
 
-    public Long getY() {
+    public double getY() {
         return Y;
     }
 
@@ -60,7 +60,7 @@ public class coordonnées {
         this.id = id;
     }
 
-    public Long getX() {
+    public double getX() {
         return X;
     }
 
