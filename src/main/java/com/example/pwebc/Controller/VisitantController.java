@@ -44,12 +44,34 @@ public class VisitantController {
     public ResponseEntity<List<utilisateur>> getPerformerProfileMySQLAge(){
         return ResponseEntity.ok().body(ageSer.getPerformerAge());
     }
+    /*J'ai du faire la conversion à la main car le cast ne marchais pas
+    *
+    * */
+    private coordonnées coversion(Object cord){
+        String obj= cord.toString();
 
+        int indexFL = 0;
+        int indexFY = 0;
+        int indexFX = obj.length()-1;
+        int nbV=0;
+        for (int i = 0; i < obj.length(); i++) {
+            if (obj.charAt(i) == ',') {
+                if (indexFL == 0) {
+                    indexFL = i;
+                } else if (indexFY == 0) {
+                    indexFY = i;
+                }
+            }
+        }
+        coordonnées crd = new coordonnées(obj.substring(9, indexFL),Double.parseDouble(obj.substring(indexFL+4, indexFY)), Double.parseDouble(obj.substring(indexFY+4, indexFX)) );
+        log.info("addCoord function {}", crd);
+        return crd;
+    }
     @PostMapping(path = "addCoord",
             consumes = MediaType.APPLICATION_JSON_VALUE, // il y a une erreur lors que j'essaye d'ajouter...
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public void addCoordUser(@RequestBody coordonnées coord,HttpServletRequest request, HttpServletResponse response) throws IOException{
-        log.info("addCoord function {}", coord);
+    public void addCoordUser(@RequestBody Object coord,HttpServletRequest request, HttpServletResponse response) throws IOException{
+        coordonnées cd =coversion(coord);
         String autheadet = request.getHeader(AUTHORIZATION);
         if(autheadet!= null && autheadet.startsWith("Baerer ")){
             try {
@@ -59,7 +81,7 @@ public class VisitantController {
                 DecodedJWT decodedJWT = verif.verify(refresh);
                 String username = decodedJWT.getSubject();
                 utilisateur usr = ageSer.getAgent(username);
-                ageSer.addCoordToUser(usr.getId(), coord);
+                ageSer.addCoordToUser(usr.getId(),cd);
 
             }catch(Exception ex){
                 response.setHeader("error", ex.getMessage());

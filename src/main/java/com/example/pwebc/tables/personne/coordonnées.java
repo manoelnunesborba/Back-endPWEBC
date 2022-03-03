@@ -72,6 +72,7 @@ public class coordonnées {
     public String toString() {
         return "coordonnées{" +
                 "id=" + id +
+                ", libelle='" + libelle + '\'' +
                 ", X=" + X +
                 ", Y=" + Y +
                 '}';
