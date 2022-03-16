@@ -12,10 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -61,8 +58,16 @@ public class UtilisateurService implements UserDetailsService {
     }
 
     public void adduser(utilisateur usr){
+        boolean canAdd=true;
         usr.setMdp(PE.encode(usr.getMdp()));
-        utilisateurRepository.save(usr);
+        List<utilisateur> listofuser =  utilisateurRepository.findAll();
+        for (int i = 0; i < listofuser.size(); i++) {
+            canAdd = !(listofuser.get(i).getNomuser().equals(usr.getNomuser()));
+        }
+        if(canAdd){
+            utilisateurRepository.save(usr);
+        }
+
     }
 
     public Role saverole(Role role){
@@ -82,9 +87,19 @@ public class UtilisateurService implements UserDetailsService {
         core.save(cr);
     }
     public void addCoordToUser(Long id, coordonnées coord){
+        boolean peutAjouter=true;
         Optional<utilisateur> ag = utilisateurRepository.findById(id);
-        saveCoord(coord);
-        ag.get().getCoord().add(coord);
+        Collection<coordonnées> listofcord =  ag.get().getCoord();
+        Iterator iterator = listofcord.iterator();
+        while(iterator.hasNext()){
+            coordonnées crd =   (coordonnées) iterator.next();
+            peutAjouter = !(crd.getX() == coord.getX() && crd.getY() == coord.getY());
+        }
+        if(peutAjouter){
+            saveCoord(coord);
+            ag.get().getCoord().add(coord);
+        }
+
 
     }
 }
